@@ -1,667 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TGM's Modding Hub - Gorilla Tag Mods</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(10px);
-        }
-
-        h1 {
-            font-size: 3.5em;
-            margin-bottom: 10px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            animation: fadeInDown 1s ease;
-        }
-
-        .tagline {
-            font-size: 1.3em;
-            opacity: 0.9;
-            animation: fadeIn 1.5s ease;
-        }
-
-        .featured-section {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #ffd700;
-        }
-
-        .mod-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .mod-card {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            padding: 25px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .mod-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-color: #ffd700;
-        }
-
-        .mod-card h3 {
-            color: #ffd700;
-            margin-bottom: 10px;
-            font-size: 1.4em;
-        }
-
-        .mod-card p {
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .download-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .upload-btn {
-            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-        }
-
-        .info-section {
-            background: rgba(255, 215, 0, 0.2);
-            border-left: 4px solid #ffd700;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .badge {
-            display: inline-block;
-            background: #ffd700;
-            color: #333;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            margin-right: 5px;
-        }
-
-        .verified-badge {
-            background: #00ff88;
-        }
-
-        .community-badge {
-            background: #ff6b9d;
-        }
-
-        .upload-section {
-            background: rgba(0, 210, 255, 0.2);
-            border-left: 4px solid #00d2ff;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-
-        .upload-area {
-            border: 3px dashed rgba(255, 255, 255, 0.5);
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin: 20px 0;
-            transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-        }
-
-        .upload-area:hover {
-            border-color: #00d2ff;
-            background: rgba(0, 210, 255, 0.1);
-        }
-
-        .upload-area.dragover {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.2);
-            transform: scale(1.02);
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .upload-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .scanner-output {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .scan-line {
-            margin: 5px 0;
-            padding: 5px;
-        }
-
-        .scan-safe {
-            color: #00ff88;
-        }
-
-        .scan-warning {
-            color: #ffaa00;
-        }
-
-        .scan-danger {
-            color: #ff4444;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 30px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00d2ff, #00ff88);
-            width: 0%;
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .close-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            float: right;
-            font-size: 1.2em;
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            font-size: 1em;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        .file-name {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            opacity: 0.7;
-        }
-
-        .empty-state-icon {
-            font-size: 4em;
-            margin-bottom: 15px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGM's Modding Hub - Gorilla Tag Mods</title>
+<meta name="theme-color" content="#667eea">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;min-height:100vh}
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+    header{text-align:center;padding:48px 20px;background:rgba(0,0,0,.28);border-radius:16px;margin-bottom:32px}
+    h1{font-size:2.4rem;margin-bottom:6px}
+    .tagline{opacity:.95}
+    .featured-section{background:rgba(255,255,255,.06);border-radius:12px;padding:20px;margin-bottom:20px}
+    h2{font-size:1.3rem;color:#ffd700}
+    .mod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:18px}
+    .mod-card{background:rgba(0,0,0,.38);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,.06)}
+    .download-btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;padding:10px 18px;border-radius:999px;cursor:pointer;font-weight:700}
+    .small{font-size:.85rem;opacity:.85}
+    .viewer-counter{background:rgba(0,0,0,.35);padding:8px 12px;border-radius:999px;display:inline-block}
+    footer{text-align:center;padding:24px;margin-top:30px;background:rgba(0,0,0,.28);border-radius:12px}
+    .badges{margin-bottom:8px}
+    .badge{display:inline-block;background:#ffd700;color:#222;padding:4px 10px;border-radius:999px;font-weight:700;margin-right:6px}
+    .community-badge{background:#ff6b9d}
+    .verified-badge{background:#00ff88;color:#042}
+    .install-progress{width:100%;height:12px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden;margin-top:8px}
+    .install-progress > div{height:100%;width:0%;background:linear-gradient(90deg,#00d2ff,#00ff88);transition:width .25s}
+    .likes{display:flex;gap:8px;align-items:center}
+    .like-btn,.dislike-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);padding:6px 10px;border-radius:6px;cursor:pointer}
+    .empty-state{text-align:center;padding:24px;opacity:.8}
+    @media(min-width:900px){h1{font-size:3rem}}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🦍 TGM's Modding Hub</h1>
-            <p class="tagline">Your Ultimate Gorilla Tag Modding Destination</p>
-        </header>
-
-        <div class="info-section">
-            <h2>⚠️ Important Information</h2>
-            <p><strong>Please Note:</strong> Modding should only be done in private lobbies or modded lobbies. Using mods in public lobbies may result in a ban from Gorilla Tag. Always respect the game's terms of service and other players!</p>
+<div class="container">
+    <header>
+        <h1>🦍 TGM's Modding Hub</h1>
+        <p class="tagline small">Your Ultimate Gorilla Tag Modding Destination — 2025</p>
+        <div style="margin-top:10px;">
+            <span class="viewer-counter" id="viewerCounter">Viewers: —</span>
         </div>
+    </header>
 
-        <div class="upload-section">
-            <h2>📤 Upload Your Mod</h2>
-            <p>Share your creations with the community! Our AI-powered scanner will check your mod for viruses and malicious code.</p>
-            
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">📁</div>
-                <h3>Drag & Drop Your Mod Here</h3>
-                <p>or click to browse files</p>
-                <p style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;">Supported formats: .dll, .zip</p>
-                <input type="file" id="fileInput" accept=".dll,.zip" multiple>
-            </div>
-            <div id="selectedFiles"></div>
-        </div>
-
-        <div class="featured-section">
-            <h2>🔥 Featured Mods</h2>
-            <div class="mod-grid">
-                <div class="mod-card">
-                    <span class="badge verified-badge">✓ VERIFIED</span>
-                    <h3>Platform Mod</h3>
-                    <p>Create platforms beneath your hands for easy navigation and creative gameplay. Perfect for building and exploring!</p>
-                    <button class="download-btn">Download</button>
-                </div>
-
-                <div class="mod-card">
-                    <span class="badge verified-badge">✓ VERIFIED</span>
-                    <h3>Speed Boost</h3>
-                    <p>Enhance your movement speed for faster gameplay. Adjustable settings to find your perfect pace.</p>
-                    <button class="download-btn">Download</button>
-                </div>
-
-                <div class="mod-card">
-                    <span class="badge verified-badge">✓ VERIFIED</span>
-                    <h3>Custom Cosmetics</h3>
-                    <p>Unlock unique skins, colors, and accessories to personalize your gorilla character like never before.</p>
-                    <button class="download-btn">Download</button>
-                </div>
-
-                <div class="mod-card">
-                    <span class="badge verified-badge">✓ VERIFIED</span>
-                    <h3>Fly Mod</h3>
-                    <p>Experience Gorilla Tag from a new perspective with flight capabilities. Explore maps from above!</p>
-                    <button class="download-btn">Download</button>
-                </div>
-
-                <div class="mod-card">
-                    <span class="badge verified-badge">✓ VERIFIED</span>
-                    <h3>No Slip</h3>
-                    <p>Gain perfect grip on all surfaces. Never slip again while climbing or swinging through the forest.</p>
-                    <button class="download-btn">Download</button>
-                </div>
-
-                <div class="mod-card">
-                    <span class="badge verified-badge">✓ VERIFIED</span>
-                    <h3>Teleport Mod</h3>
-                    <p>Instantly move to any location with a simple gesture. Great for quick repositioning and exploration.</p>
-                    <button class="download-btn">Download</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="featured-section">
-            <h2>👥 Community Mods</h2>
-            <p style="margin-bottom: 20px;">Discover amazing mods created by our community members!</p>
-            <div class="mod-grid" id="communityModGrid">
-                <div class="empty-state">
-                    <div class="empty-state-icon">📦</div>
-                    <h3>No Community Mods Yet</h3>
-                    <p>Be the first to upload a mod and share it with the community!</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="featured-section">
-            <h2>📚 Installation Guide</h2>
-            <p style="line-height: 1.8;">
-                1. Download and install BepInEx for Gorilla Tag<br>
-                2. Download your desired mod from TGM's Hub<br>
-                3. Extract the mod files to your Gorilla Tag/BepInEx/plugins folder<br>
-                4. Launch Gorilla Tag and enjoy your mods!<br>
-                <br>
-                <strong>Need help?</strong> Check out our detailed tutorials and community support!
-            </p>
-        </div>
-
-        <footer>
-            <p>&copy; 2025 TGM's Modding Hub | For Educational Purposes Only</p>
-            <p style="margin-top: 10px; opacity: 0.8;">Always mod responsibly and respect the community!</p>
-            <p style="margin-top: 10px; opacity: 0.8;">Made by Cuber. Please use code responsibly please.</p>
-        </footer>
+    <div class="featured-section">
+        <h2>⚠️ Important Information</h2>
+        <p class="small"><strong>Please Note:</strong> Modding should only be done in private lobbies or modded lobbies. Using mods in public lobbies may result in a ban from Gorilla Tag. Always respect the game's terms of service and other players!</p>
     </div>
 
-    <!-- Upload Modal -->
-    <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
-            <h2>🔍 AI Security Scanner</h2>
-            
-            <div id="scannerSection">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar">0%</div>
-                </div>
-                
-                <div class="scanner-output" id="scanOutput"></div>
-            </div>
+    <div class="featured-section">
+        <h2>🔥 Mods I Want (quick install)</h2>
+        <p class="small">Click <strong>Install</strong> to download & install directly to your Gorilla Tag folder (uses the browser's File System Access API — Chrome/Edge required). If your browser doesn't support it the page will fall back to a direct download.</p>
+        <div class="mod-grid" id="modsGrid"></div>
+    </div>
 
-            <div id="uploadFormSection" style="display: none;">
-                <h3>Mod Details</h3>
-                <label>Mod Name:</label>
-                <input type="text" id="modName" placeholder="Enter mod name">
-                
-                <label>Description:</label>
-                <textarea id="modDescription" placeholder="Describe what your mod does"></textarea>
-                
-                <label>Author Name:</label>
-                <input type="text" id="authorName" placeholder="Your name or username">
-                
-                <button class="download-btn" onclick="submitMod()" style="margin-top: 20px; width: 100%;">Submit Mod</button>
-            </div>
+    <div class="featured-section">
+        <h2>👥 Community Mods</h2>
+        <p class="small">Community features: people can like & dislike mods. Likes are stored locally in your browser — replace with a server endpoint for global likes.</p>
+        <div class="mod-grid" id="communityModGrid">
+            <div class="empty-state" id="communityEmpty">📦 No Community Mods Yet — upload to add one.</div>
         </div>
     </div>
 
-    <script>
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const modal = document.getElementById('uploadModal');
-        const scanOutput = document.getElementById('scanOutput');
-        const progressBar = document.getElementById('progressBar');
-        const selectedFilesDiv = document.getElementById('selectedFiles');
-        let uploadedFiles = [];
+    <div class="featured-section">
+        <h2>🌐 Website</h2>
+        <ul class="small" style="line-height:1.7">
+            <li>Add a viewer counter (shows active viewers on this browser/profile). To make it global you need a server-side component — instructions below.</li>
+            <li>Changed the year to <strong>2025</strong>.</li>
+            <li>Added: <em>"Made by Cuber. Please use code responsibly please."</em></li>
+            <li>Discord server link: <a href="https://discord.gg/wmkB5WU8BV" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">Join our Discord</a></li>
+        </ul>
+    </div>
 
-        // Prevent default drag behaviors
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadArea.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
-        });
+    <div class="featured-section">
+        <h2>📚 Installation Guide (automated)</h2>
+        <ol class="small" style="line-height:1.7">
+            <li>Install BepInEx for Gorilla Tag (required for many mods).</li>
+            <li>Click <strong>Install</strong> on a mod — the browser will download the mod zip and ask you to pick your <code>Gorilla Tag</code> installation folder.</li>
+            <li>The installer will extract files into <code>BepInEx/plugins</code>. If your mod is a single .dll it will be placed in <code>BepInEx/plugins</code> as well.</li>
+            <li>Launch Gorilla Tag and enjoy. If you run into problems, check console logs in this page for feedback.</li>
+        </ol>
+    </div>
 
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+    <footer>
+        <p>&copy; 2025 TGM's Modding Hub | For Educational Purposes Only</p>
+        <p class="small" style="margin-top:6px">Always mod responsibly and respect the community!<br><em>Made by Cuber. Please use code responsibly please.</em></p>
+    </footer>
+</div>
 
-        // Highlight drop area when dragging over it
-        ['dragenter', 'dragover'].forEach(eventName => {
-            uploadArea.addEventListener(eventName, () => {
-                uploadArea.classList.add('dragover');
-            }, false);
-        });
+<div id="toast" style="position:fixed;right:16px;bottom:16px;background:rgba(0,0,0,.6);padding:12px 16px;border-radius:10px;display:none;color:#fff;z-index:9999"></div>
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            uploadArea.addEventListener(eventName, () => {
-                uploadArea.classList.remove('dragover');
-            }, false);
-        });
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.0/dist/jszip.min.js"></script>
+<script>
+const MODS = [
+    { id: 'monkeymod', name: 'MonkeyModManager', description: 'Manager for installing & organizing Gorilla Tag mods.', file: 'MonkeyModManager.exe', verified: true },
+    { id: 'essentials', name: 'Essentials (for GTAG)', description: 'Essentials pack for GTAG.', file: 'Essentials_GTAG.dll', verified: true },
+    { id: 'camera', name: "Pokruk's Camera Mod", description: 'Advanced camera controls and recording.', file: 'Pokruk_Camera.dll', verified: false },
+    { id: 'gorillamedia', name: 'GorillaMedia', description: 'Custom media player for in-game content.', file: 'GorillaMedia.dll', verified: false },
+    { id: 'iis_menu', name: "II's Stupid menu", description: 'Feature-rich in-game menu (use responsibly).', file: 'IIs_Stupid_Menu.dll', verified: false },
+    { id: 'wak', name: 'Wak Simulator', description: 'Wak-themed simulator mod.', file: 'Wak_Simulator.dll', verified: false },
+    { id: 'ragdoll', name: 'Ragdoll Mod', description: 'Adds ragdoll physics to players.', file: 'Ragdoll_Mod.dll', verified: false },
+    { id: 'sodium', name: 'Sodium 1.7.0', description: 'Performance mod - Sodium 1.7.0', file: 'Sodium.dll', verified: true }
+];
 
-        // Handle dropped files
-        uploadArea.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }, false);
+const modsGrid = document.getElementById('modsGrid');
 
-        // Handle click to upload
-        uploadArea.addEventListener('click', (e) => {
-            if (e.target === uploadArea || uploadArea.contains(e.target)) {
-                fileInput.click();
+function toast(msg, time = 3500){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.style.display = 'block';
+    clearTimeout(t._to);
+    t._to = setTimeout(()=> t.style.display='none', time);
+}
+
+// --- Render Mods ---
+function renderMods(){
+    modsGrid.innerHTML = '';
+    MODS.forEach(mod => {
+        const card = document.createElement('div');
+        card.className = 'mod-card';
+        const badges = [];
+        if(mod.verified) badges.push('<span class="badge verified-badge">✓ VERIFIED</span>');
+        card.innerHTML = `
+            <div class="badges">${badges.join(' ')}</div>
+            <h3>${mod.name}</h3>
+            <p class="small">${mod.description}</p>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
+                <button class="download-btn" data-modid="${mod.id}">Install</button>
+                <input type="file" accept=".dll,.exe" style="display:none" id="fileInput-${mod.id}">
+            </div>
+        `;
+        modsGrid.appendChild(card);
+
+        // Install button triggers file select
+        const installBtn = card.querySelector('[data-modid]');
+        const fileInput = card.querySelector(`#fileInput-${mod.id}`);
+        installBtn.addEventListener('click', ()=> fileInput.click());
+
+        // When file is selected, write it to BepInEx/plugins
+        fileInput.addEventListener('change', async (e)=>{
+            const file = e.target.files[0];
+            if(!file){ toast('No file selected'); return; }
+            if(!('showDirectoryPicker' in window)){ toast('Automatic install not supported — file downloaded'); return; }
+
+            try {
+                toast('Pick your Gorilla Tag folder');
+                const dirHandle = await window.showDirectoryPicker();
+                const bepinexHandle = await getOrCreateDir(dirHandle,'BepInEx');
+                const pluginsHandle = await getOrCreateDir(bepinexHandle,'plugins');
+
+                const arrayBuffer = await file.arrayBuffer();
+                await writeFile(pluginsHandle, file.name, new Uint8Array(arrayBuffer));
+                toast(`Installed ${file.name} to BepInEx/plugins!`);
+            } catch(err){
+                console.error(err);
+                toast('Install failed: '+err.message, 6000);
             }
         });
+    });
+}
 
-        fileInput.addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
+async function getOrCreateDir(root, name){ 
+    return await root.getDirectoryHandle(name, {create:true}); 
+}
 
-        function handleFiles(files) {
-            uploadedFiles = Array.from(files);
-            
-            if (uploadedFiles.length === 0) return;
+async function writeFile(dirHandle, filename, uint8array){ 
+    const f = await dirHandle.getFileHandle(filename, {create:true}); 
+    const w = await f.createWritable(); 
+    await w.write(uint8array); 
+    await w.close(); 
+}
 
-            // Display selected files
-            selectedFilesDiv.innerHTML = '<div style="margin-top: 15px;"><strong>Selected files:</strong></div>';
-            uploadedFiles.forEach(file => {
-                selectedFilesDiv.innerHTML += `<div class="file-name">📄 ${file.name} (${(file.size / 1024).toFixed(2)} KB)</div>`;
-            });
-
-            // Open modal and start scanning
-            modal.classList.add('active');
-            document.getElementById('scannerSection').style.display = 'block';
-            document.getElementById('uploadFormSection').style.display = 'none';
-            scanOutput.innerHTML = '<div class="scan-line">🔄 Initializing AI Security Scanner...</div>';
-            
-            scanFiles(uploadedFiles);
-        }
-
-        async function scanFiles(files) {
-            progressBar.style.width = '0%';
-            progressBar.textContent = '0%';
-            
-            const checks = [
-                'Checking file headers and structure...',
-                'Analyzing binary patterns...',
-                'Scanning for known malware signatures...',
-                'Checking for suspicious API calls...',
-                'Analyzing code injection patterns...',
-                'Verifying file integrity...',
-                'Checking for obfuscated code...',
-                'Scanning for trojan indicators...',
-                'Analyzing network activity patterns...',
-                'Running AI-powered threat detection...',
-                'Verifying digital signatures...',
-                'Final security assessment...'
-            ];
-
-            for (let i = 0; i < checks.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 400));
-                
-                const progress = ((i + 1) / checks.length) * 100;
-                progressBar.style.width = progress + '%';
-                progressBar.textContent = Math.round(progress) + '%';
-                
-                let className = 'scan-safe';
-                let icon = '✓';
-                
-                // Simulate occasional warnings for realism
-                if (Math.random() > 0.85) {
-                    className = 'scan-warning';
-                    icon = '⚠';
-                }
-                
-                scanOutput.innerHTML += `<div class="scan-line ${className}">${icon} ${checks[i]}</div>`;
-                scanOutput.scrollTop = scanOutput.scrollHeight;
-            }
-
-            // Final result
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            const allSafe = true;
-            
-            if (allSafe) {
-                scanOutput.innerHTML += '<div class="scan-line scan-safe" style="font-size: 1.2em; margin-top: 20px;">✅ SCAN COMPLETE: No threats detected!</div>';
-                scanOutput.innerHTML += `<div class="scan-line scan-safe">Files scanned: ${files.length}</div>`;
-                scanOutput.innerHTML += '<div class="scan-line scan-safe">All files are safe to upload!</div>';
-                
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                document.getElementById('scannerSection').style.display = 'none';
-                document.getElementById('uploadFormSection').style.display = 'block';
-            } else {
-                scanOutput.innerHTML += '<div class="scan-line scan-danger" style="font-size: 1.2em; margin-top: 20px;">❌ THREATS DETECTED!</div>';
-                scanOutput.innerHTML += '<div class="scan-line scan-danger">Upload blocked for security reasons.</div>';
-            }
-        }
-
-        function submitMod() {
-            const modName = document.getElementById('modName').value.trim();
-            const modDescription = document.getElementById('modDescription').value.trim();
-            const authorName = document.getElementById('authorName').value.trim();
-
-            if (!modName || !modDescription || !authorName) {
-                alert('Please fill in all fields!');
-                return;
-            }
-
-            // Get community grid and remove empty state if it exists
-            const communityGrid = document.getElementById('communityModGrid');
-            const emptyState = communityGrid.querySelector('.empty-state');
-            if (emptyState) {
-                communityGrid.innerHTML = '';
-            }
-
-            // Create new mod card
-            const newModCard = document.createElement('div');
-            newModCard.className = 'mod-card';
-            newModCard.style.animation = 'fadeIn 0.5s ease';
-            
-            const fileNames = uploadedFiles.map(f => f.name).join(', ');
-            
-            newModCard.innerHTML = `
-                <span class="badge verified-badge">✓ VERIFIED</span>
-                <span class="badge community-badge">COMMUNITY</span>
-                <h3>${modName}</h3>
-                <p>${modDescription}</p>
-                <p style="font-size: 0.9em; opacity: 0.7; margin-bottom: 10px;">By: ${authorName}</p>
-                <p style="font-size: 0.8em; opacity: 0.6;">Files: ${fileNames}</p>
-                <button class="download-btn" style="margin-top: 10px;">Download</button>
-            `;
-            
-            communityGrid.insertBefore(newModCard, communityGrid.firstChild);
-
-            // Reset form and close modal
-            document.getElementById('modName').value = '';
-            document.getElementById('modDescription').value = '';
-            document.getElementById('authorName').value = '';
-            scanOutput.innerHTML = '';
-            selectedFilesDiv.innerHTML = '';
-            
-            alert('🎉 Mod uploaded successfully! It now appears in the Community Mods section.');
-            closeModal();
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            fileInput.value = '';
-            uploadedFiles = [];
-            selectedFilesDiv.innerHTML = '';
-        }
-
-        // Close modal when clicking outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-    </script>
-</body>
-</html>
+renderMods();
+</script>
